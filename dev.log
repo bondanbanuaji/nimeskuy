@@ -1,0 +1,9 @@
+npm notice run nimeskuy@0.1.0 dev
+npm notice run next dev --webpack
+▲ Next.js 16.3.4 (webpack)
+- Local:         http://localhost:3000
+- Network:       http://172.20.10.2:3000
+✓ Ready in 473ms
+✓ Running next.config.ts took 49ms
+
+ GET / 200 in 1445ms (next.js: 1066ms, application-code: 380ms)
