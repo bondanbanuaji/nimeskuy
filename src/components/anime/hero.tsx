@@ -134,7 +134,7 @@ export function HeroCarousel({ animes }: { animes: AnimeCard[] }) {
   };
 
   return (
-    <div className="relative overflow-hidden bg-black border-0 rounded-none min-h-[62svh] sm:min-h-[68svh] lg:min-h-[70vh] flex flex-col justify-end -mt-[calc(var(--site-header-h)+1.5rem)] mx-[calc(50%-50vw)] w-screen max-w-none">
+    <div className="relative overflow-hidden bg-black border border-[#1c1c1c] rounded-2xl w-[340px] sm:w-[720px] lg:w-[1120px] xl:w-[1200px] h-[460px] sm:h-[500px] lg:h-[560px] mx-auto flex flex-col justify-end -mt-[calc(var(--site-header-h)+1.5rem)]">
       {/* background — full width cinematic, pakai banner high-res biar gak burik */}
       <div key={anime.slug} className="absolute inset-0">
         <img
@@ -175,9 +175,9 @@ export function HeroCarousel({ animes }: { animes: AnimeCard[] }) {
         <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/40 to-transparent pointer-events-none" />
       </div>
 
-      {/* content — kiri, konsisten ukurannya jangan fleksibel */}
-      <div className="relative mx-auto flex w-full max-w-[1520px] min-h-[380px] sm:min-h-[420px] lg:min-h-[440px] flex-col justify-between gap-0 p-4 sm:p-8 lg:p-10 pt-[calc(var(--site-header-h)+2rem)] sm:pt-[calc(var(--site-header-h)+3rem)] lg:pt-[calc(var(--site-header-h)+4rem)] pb-8 sm:pb-10">
-        <div className="w-full sm:w-[640px] max-w-[640px] shrink-0 space-y-3 sm:space-y-4">
+      {/* content — kiri, fix 640x440 jangan fleksibel */}
+      <div className="relative mx-auto flex w-[300px] sm:w-[600px] lg:w-[640px] h-[360px] sm:h-[400px] lg:h-[440px] flex-col justify-between gap-0 p-4 sm:p-8 lg:p-10 pt-2 pb-2">
+        <div className="w-full shrink-0 space-y-3 flex flex-col justify-center">
           {/* badge */}
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center rounded-full bg-[#d50032] px-3 py-1 text-[11px] font-black tracking-widest text-white">FEATURED</span>
