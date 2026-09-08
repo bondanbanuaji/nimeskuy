@@ -1,0 +1,31 @@
+{
+  "name": "NimeSkuy — Streaming Anime Sub Indo",
+  "short_name": "NimeSkuy",
+  "description": "NimeSkuy adalah platform streaming anime dengan katalog anime, informasi episode, genre, dan detail anime. Dikembangkan oleh Bondan Banuaji.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#d50032",
+  "lang": "id",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo-256.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

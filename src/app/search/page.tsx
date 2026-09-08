@@ -11,15 +11,27 @@ export const revalidate = 0;
 
 export async function generateMetadata({ searchParams }: { searchParams: Promise<{ q?: string }> }): Promise<Metadata> {
   const { q } = await searchParams;
-  if (q) {
+  const baseMeta = {
+    alternates: { canonical: "/search" as const },
+    robots: { index: false, follow: true, googleBot: { index: false, follow: true } } as const,
+    openGraph: {
+      siteName: "NimeSkuy" as const,
+      locale: "id_ID" as const,
+      type: "website" as const,
+    },
+  };
+  if (q?.trim()) {
+    const clean = q.trim().slice(0, 60);
     return {
-      title: `Search: ${q}`,
-      description: `Hasil pencarian anime untuk "${q}" di NimeSkuy — Sanka`,
+      title: `Search: ${clean} | NimeSkuy`,
+      description: `Hasil pencarian anime untuk "${clean}" di NimeSkuy — temukan anime sub Indo dengan cepat.`,
+      ...baseMeta,
     };
   }
   return {
-    title: "Cari Anime",
-    description: "Cari anime favoritmu di NimeSkuy — Sanka API",
+    title: "Cari Anime | NimeSkuy",
+    description: "Cari anime favoritmu di NimeSkuy — database anime sub Indo lengkap, cepat, dan mudah.",
+    ...baseMeta,
   };
 }
 

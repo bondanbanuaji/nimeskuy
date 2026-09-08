@@ -1,4 +1,12 @@
-﻿export const metadata = { title: "Terms | NimeSkuy" };
+﻿import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Terms of Service | NimeSkuy",
+  description: "Syarat penggunaan NimeSkuy — platform streaming anime yang dikembangkan oleh Bondan Banuaji.",
+  alternates: { canonical: "/terms" },
+  robots: { index: true, follow: true },
+};
+
 export default function TermsPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 sm:px-6 py-10">

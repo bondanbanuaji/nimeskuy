@@ -22,11 +22,12 @@ export function HeroCarousel({ animes }: { animes: AnimeCard[] }) {
   const [showTrailer, setShowTrailer] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [detail, setDetail] = useState<HeroDetail | null>(null);
+  const [trailerSrc, setTrailerSrc] = useState<string>("https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4");
+  const [bannerUrl, setBannerUrl] = useState<string | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const idleRef = useRef<NodeJS.Timeout | null>(null);
 
   const anime = list[current] ?? list[0];
-  if (!anime) return null;
 
   const SLIDE_MS = 15000;
 
@@ -58,19 +59,18 @@ export function HeroCarousel({ animes }: { animes: AnimeCard[] }) {
     resetIdle();
     const events: (keyof WindowEventMap)[] = ["mousemove", "mousedown", "keydown", "touchstart", "wheel"];
     const handler = () => resetIdle();
-    events.forEach((e) => window.addEventListener(e, handler, { passive: true } as any));
+    events.forEach((e) => window.addEventListener(e, handler, { passive: true }));
     window.addEventListener("scroll", handler, { passive: true });
     return () => {
       if (idleRef.current) clearTimeout(idleRef.current);
-      events.forEach((e) => window.removeEventListener(e, handler as any));
-      window.removeEventListener("scroll", handler as any);
+      events.forEach((e) => window.removeEventListener(e, handler));
+      window.removeEventListener("scroll", handler);
     };
   }, [current]);
 
   // fetch synopsis/metadata dari Sanka detail untuk description
-  const [trailerSrc, setTrailerSrc] = useState<string>("https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4");
-  const [bannerUrl, setBannerUrl] = useState<string | null>(null);
   useEffect(() => {
+    if (!anime) return;
     let cancelled = false;
     const fallback = (anime as unknown as { trailerUrl?: string }).trailerUrl ?? null;
     if (fallback) {
@@ -111,14 +111,15 @@ export function HeroCarousel({ animes }: { animes: AnimeCard[] }) {
     return () => {
       cancelled = true;
     };
-  }, [anime.slug, anime]);
+  }, [anime?.slug, anime]);
+
+  if (!anime) return null;
 
   const description = detail?.synopsis?.join(" ") ?? "";
   // Year dari aired/year — extract 4 digit
   const rawYear = detail?.year ?? (detail as unknown as { aired?: string })?.aired ?? null;
   const yearMatch = rawYear ? String(rawYear).match(/(19|20)\d{2}/) : null;
   const year = yearMatch ? yearMatch[0] : null;
-  const duration = detail?.duration ?? null;
   const season = anime.season ? String(anime.season) : null;
   const episodes = anime.episodes ? `${anime.episodes} ${anime.episodes === 1 ? "Episode" : "Episodes"}` : null;
   const genres = anime.genres?.slice(0, 3).map((g) => g.name).join(", ") ?? null;
@@ -134,17 +135,15 @@ export function HeroCarousel({ animes }: { animes: AnimeCard[] }) {
   };
 
   return (
-    <div className="relative overflow-hidden bg-black border border-[#1c1c1c] rounded-2xl w-[340px] sm:w-[720px] lg:w-[1120px] xl:w-[1200px] h-[460px] sm:h-[500px] lg:h-[560px] mx-auto flex flex-col justify-end -mt-[calc(var(--site-header-h)+1.5rem)]">
+    <div className="relative overflow-hidden bg-black w-full h-[500px] sm:h-[560px] lg:h-[640px] xl:h-[700px] flex flex-col justify-end -mt-[calc(var(--site-header-h)+1.5rem)]">
       {/* background — full width cinematic, pakai banner high-res biar gak burik */}
       <div key={anime.slug} className="absolute inset-0">
         <img
           src={bannerUrl ?? anime.poster}
-          alt={anime.title}
+          alt={`Poster ${anime.title}`}
           className="h-full w-full object-cover"
           loading={current === 0 ? "eager" : "lazy"}
-          // @ts-ignore
           style={{ objectPosition: "center 20%" }}
-          // @ts-ignore — referensi context7: pakai large_image_url dari Jikan biar gak burik
           fetchPriority={current === 0 ? "high" : "auto"}
         />
         {/* overlay sesuai spec: kiri lebih gelap, bawah gelap */}
@@ -176,17 +175,17 @@ export function HeroCarousel({ animes }: { animes: AnimeCard[] }) {
       </div>
 
       {/* content — kiri, fix 640x440 jangan fleksibel */}
-      <div className="relative mx-auto flex w-[300px] sm:w-[600px] lg:w-[640px] h-[360px] sm:h-[400px] lg:h-[440px] flex-col justify-between gap-0 p-4 sm:p-8 lg:p-10 pt-2 pb-2">
-        <div className="w-full shrink-0 space-y-3 flex flex-col justify-center">
+      <div className="relative mx-0 flex w-full max-w-[640px] h-full flex-col justify-end items-start gap-0 px-4 sm:px-8 lg:px-10 pb-6 sm:pb-8 lg:pb-10">
+        <div className="w-full shrink-0 space-y-3 flex flex-col">
           {/* badge */}
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center rounded-full bg-[#d50032] px-3 py-1 text-[11px] font-black tracking-widest text-white">FEATURED</span>
           </div>
 
-          {/* title — focal */}
-          <h1 className="text-[28px] font-black leading-[0.95] tracking-tight text-white sm:text-[36px] lg:text-[44px] drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)] line-clamp-3">
+          {/* title — focal (h2 karena homepage sudah punya sr-only h1 utama; hierarchy tetap benar) */}
+          <h2 className="text-[28px] font-black leading-[0.95] tracking-tight text-white sm:text-[36px] lg:text-[44px] drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)] line-clamp-3">
             {anime.title}
-          </h1>
+          </h2>
 
           {/* metadata row tepat di bawah judul — ⭐ Rating · Year · Season · Episodes · Genres · [Status] */}
           <div className="flex flex-wrap items-center gap-2 text-[13px] sm:text-sm leading-none">
@@ -231,11 +230,11 @@ export function HeroCarousel({ animes }: { animes: AnimeCard[] }) {
 
           {/* description — line-clamp 2-3 */}
           {description ? (
-            <p className="line-clamp-2 max-w-[560px] text-[13.5px] leading-6 text-white/80 sm:line-clamp-3 sm:text-[14.5px] sm:leading-7">
+            <p className="line-clamp-2 max-w-[700px] text-[13.5px] leading-6 text-white/80 sm:line-clamp-3 sm:text-[14.5px] sm:leading-7">
               {description}
             </p>
           ) : (
-            <p className="line-clamp-2 max-w-[520px] text-[13.5px] leading-6 text-white/70 sm:text-[14px]">Streaming anime sub Indo terbaru — tersedia di NimeSkuy via Sanka.</p>
+            <p className="line-clamp-2 max-w-[560px] text-[13.5px] leading-6 text-white/70 sm:text-[14px]">Streaming anime sub Indo terbaru — tersedia di NimeSkuy via Sanka.</p>
           )}
 
           {/* CTA */}

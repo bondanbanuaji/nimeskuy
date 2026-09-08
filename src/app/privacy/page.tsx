@@ -1,4 +1,12 @@
-﻿export const metadata = { title: "Privacy | NimeSkuy" };
+﻿import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy | NimeSkuy",
+  description: "Kebijakan privasi NimeSkuy — bagaimana data riwayat tonton dan favorit disimpan secara lokal di browser Anda.",
+  alternates: { canonical: "/privacy" },
+  robots: { index: true, follow: true },
+};
+
 export default function PrivacyPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 sm:px-6 py-10">

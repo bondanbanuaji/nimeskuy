@@ -7,10 +7,35 @@ import Link from "next/link";
 
 export const revalidate = 300;
 
-export const metadata: Metadata = {
-  title: "Anime Ongoing",
-  description: "Daftar anime ongoing terbaru sub Indo di NimeSkuy — Sanka API",
-};
+export async function generateMetadata({ searchParams }: { searchParams: Promise<{ page?: string }> }): Promise<Metadata> {
+  const { page } = await searchParams;
+  const currentPage = Math.max(1, parseInt(page ?? "1", 10) || 1);
+  const { absoluteUrl } = await import("@/lib/site");
+  const title = currentPage > 1 ? `Anime Ongoing — Halaman ${currentPage} | NimeSkuy` : "Anime Ongoing | NimeSkuy";
+  const description =
+    "Daftar anime ongoing terbaru sub Indo di NimeSkuy — update setiap musim, streaming cepat, dan info episode lengkap.";
+  const canonical = currentPage > 1 ? `/ongoing?page=${currentPage}` : "/ongoing";
+  return {
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: {
+      title,
+      description,
+      url: absoluteUrl(canonical),
+      siteName: "NimeSkuy",
+      type: "website",
+      locale: "id_ID",
+      images: [{ url: "/logo.png", width: 512, height: 512, alt: "NimeSkuy — Anime Ongoing" }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/logo.png"],
+    },
+  };
+}
 
 export default async function OngoingPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
   const { page } = await searchParams;
@@ -25,8 +50,16 @@ export default async function OngoingPage({ searchParams }: { searchParams: Prom
         </div>
       );
     }
+    const { Breadcrumbs } = await import("@/components/seo/breadcrumbs");
+    const { JsonLd, breadcrumbJsonLd } = await import("@/components/seo/json-ld");
+    const bc = breadcrumbJsonLd([
+      { name: "Home", url: "/" },
+      { name: "Ongoing Anime", url: "/ongoing" },
+    ]);
     return (
       <div className="mx-auto max-w-\[1520px\] px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+        <JsonLd data={bc} />
+        <Breadcrumbs items={[{ name: "Home", href: "/" }, { name: "Ongoing" }]} />
         <div className="space-y-1">
           <h1 className="text-[22px] font-black tracking-tight text-white sm:text-2xl flex items-center gap-2.5">
             <span className="h-6 w-1 rounded-full bg-[#d50032]" /> Ongoing Anime

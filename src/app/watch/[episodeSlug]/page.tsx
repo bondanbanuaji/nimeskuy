@@ -10,14 +10,39 @@ export const revalidate = 300;
 
 export async function generateMetadata({ params }: { params: Promise<{ episodeSlug: string }> }): Promise<Metadata> {
   const { episodeSlug } = await params;
+  const { absoluteUrl } = await import("@/lib/site");
   try {
     const ep = await getEpisodeDetail(episodeSlug);
+    // Episode/watch pages are player pages — thin content, parameter variations (?server= etc) must not be indexed.
+    // Canonical is itself without query, but robots noindex prevents index bloat.
     return {
-      title: `${ep.title} | NimeSkuy — Sanka`,
-      description: `Nonton ${ep.title} sub Indo di NimeSkuy`,
+      title: `${ep.title} | NimeSkuy`,
+      description: `Nonton ${ep.title} sub Indo di NimeSkuy. Pilih server streaming dan lanjutkan menonton dengan nyaman.`,
+      alternates: { canonical: `/watch/${episodeSlug}` },
+      openGraph: {
+        title: `${ep.title} | NimeSkuy`,
+        description: `Nonton ${ep.title} sub Indo di NimeSkuy.`,
+        url: absoluteUrl(`/watch/${episodeSlug}`),
+        siteName: "NimeSkuy",
+        type: "video.episode",
+        locale: "id_ID",
+      },
+      twitter: {
+        card: "summary",
+        title: `${ep.title} | NimeSkuy`,
+        description: `Nonton ${ep.title} sub Indo di NimeSkuy.`,
+      },
+      robots: {
+        index: false,
+        follow: true,
+        googleBot: { index: false, follow: true },
+      },
     };
   } catch {
-    return { title: "Episode tidak ditemukan | NimeSkuy" };
+    return {
+      title: "Episode tidak ditemukan | NimeSkuy",
+      robots: { index: false, follow: true },
+    };
   }
 }
 
@@ -49,7 +74,29 @@ export default async function WatchPage({ params }: { params: Promise<{ episodeS
     );
   }
 
-  return <WatchClient initialDetail={detail} episodeSlug={episodeSlug} />;
+  // Breadcrumb for UX even though noindex — helps internal linking
+  const { Breadcrumbs } = await import("@/components/seo/breadcrumbs");
+  const { JsonLd, breadcrumbJsonLd } = await import("@/components/seo/json-ld");
+  const bc = breadcrumbJsonLd([
+    { name: "Home", url: "/" },
+    { name: detail.animeSlug ? "Anime" : "Watch", url: detail.animeSlug ? `/anime/${detail.animeSlug}` : "/" },
+    { name: detail.title, url: `/watch/${episodeSlug}` },
+  ]);
+  return (
+    <>
+      <div className="mx-auto max-w-\[1520px\] px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6">
+        <JsonLd data={bc} />
+        <Breadcrumbs
+          items={[
+            { name: "Home", href: "/" },
+            ...(detail.animeSlug ? [{ name: "Anime", href: `/anime/${detail.animeSlug}` } as const] : []),
+            { name: detail.title },
+          ]}
+        />
+      </div>
+      <WatchClient initialDetail={detail} episodeSlug={episodeSlug} />
+    </>
+  );
 }
 
 

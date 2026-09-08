@@ -97,12 +97,10 @@ export function Navbar() {
           <div className="header-inner max-w-[1520px] mx-auto">
             <div className="header-content-padding px-3 sm:px-5">
               <div className="site-header-row flex items-center">
-                {/* logo — plek: idlix.webp style but NimeSkuy */}
+                {/* logo — png dari gradient N */}
                 <div className="header-logo flex items-center mr-6 lg:mr-8 shrink-0">
                   <Link href="/" className="site-logo-action flex items-center gap-2.5">
-                    <span className="flex h-7 w-7 items-center justify-center rounded-[7px] bg-gradient-to-br from-[#d50032] to-[#ff3d2e] text-white font-black text-[13px] leading-none">
-                      N
-                    </span>
+                    <img src="/logo.png" alt="NimeSkuy" width={28} height={28} className="h-7 w-7 rounded-[7px] object-cover shadow-[0_2px_8px_rgba(213,0,50,0.3)]" />
                     <span className="hidden sm:inline text-[16px] font-black tracking-tight text-white leading-none">
                       Nime<span className="text-[#d50032]">Skuy</span>
                     </span>
@@ -211,7 +209,7 @@ export function Navbar() {
 
 export function BottomNav() {
   const pathname = usePathname();
-  const items = [
+  const items: { href: string; label: string; icon: React.ComponentType<{ className?: string; strokeWidth?: number }> }[] = [
     { href: "/", label: "Home", icon: IconHome },
     { href: "/search", label: "Cari", icon: Search },
     { href: "/schedule", label: "Jadwal", icon: IconCalendar },
@@ -221,7 +219,7 @@ export function BottomNav() {
     <nav className="fixed bottom-0 left-0 right-0 z-40 flex items-center justify-around border-t border-[#1c1c1c] bg-black/95 backdrop-blur-xl px-2 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))] sm:hidden">
       {items.map((it) => {
         const active = pathname === it.href;
-        const Icon = it.icon as any;
+        const Icon = it.icon;
         return (
           <Link
             key={it.href}

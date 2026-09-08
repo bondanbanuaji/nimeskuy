@@ -7,24 +7,50 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { Star, Calendar, Film, Clock, HeartButton } from "./heart-button";
 import { EmptyState } from "@/components/ui/empty-state";
+import { Breadcrumbs } from "@/components/seo/breadcrumbs";
+import { JsonLd, breadcrumbJsonLd, animeDetailJsonLd } from "@/components/seo/json-ld";
 
 export const revalidate = 1800;
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
+  const { absoluteUrl } = await import("@/lib/site");
   try {
     const anime = await getAnimeDetail(slug);
+    const title = `${anime.title} | NimeSkuy`;
+    const descRaw = anime.synopsis.slice(0, 2).join(" ").replace(/\s+/g, " ").trim();
+    const description =
+      descRaw.slice(0, 155) + (descRaw.length > 155 ? "…" : "") ||
+      `Tonton dan jelajahi ${anime.title} — informasi episode, genre, dan detail lengkap di NimeSkuy.`;
+    const url = absoluteUrl(`/anime/${slug}`);
     return {
-      title: `${anime.title} - Nonton Anime Sub Indo | Sanka`,
-      description: anime.synopsis.slice(0, 2).join(" ").slice(0, 160) || `Nonton ${anime.title} sub Indo di NimeSkuy`,
+      title: anime.title,
+      description,
+      alternates: { canonical: `/anime/${slug}` },
       openGraph: {
-        title: anime.title,
-        description: anime.synopsis[0]?.slice(0, 160) ?? "",
-        images: anime.poster ? [{ url: anime.poster }] : undefined,
+        title,
+        description,
+        url,
+        siteName: "NimeSkuy",
+        type: "video.tv_show",
+        locale: "id_ID",
+        images: anime.poster
+          ? [{ url: anime.poster, width: 600, height: 900, alt: `${anime.title} — poster anime` }]
+          : [{ url: "/logo.png", width: 512, height: 512, alt: "NimeSkuy" }],
       },
+      twitter: {
+        card: "summary_large_image",
+        title,
+        description,
+        images: anime.poster ? [anime.poster] : ["/logo.png"],
+      },
+      robots: { index: true, follow: true },
     };
   } catch {
-    return { title: "Anime tidak ditemukan | NimeSkuy" };
+    return {
+      title: "Anime tidak ditemukan | NimeSkuy",
+      robots: { index: false, follow: true },
+    };
   }
 }
 
@@ -51,19 +77,38 @@ export default async function AnimeDetailPage({ params }: { params: Promise<{ sl
     );
   }
 
+  const breadcrumbData = breadcrumbJsonLd([
+    { name: "Home", url: "/" },
+    { name: "Anime", url: "/ongoing" },
+    { name: anime.title, url: `/anime/${slug}` },
+  ]);
+  const animeLd = animeDetailJsonLd({
+    slug,
+    title: anime.title,
+    poster: anime.poster,
+    synopsis: anime.synopsis,
+    genres: anime.genres,
+    score: anime.score,
+    status: anime.status,
+  });
+
   return (
     <div className="mx-auto max-w-\[1520px\] px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+      <JsonLd data={[breadcrumbData, animeLd]} />
+      <Breadcrumbs items={[{ name: "Home", href: "/" }, { name: "Anime", href: "/ongoing" }, { name: anime.title }]} />
       {/* Hero */}
       <div className="relative overflow-hidden rounded-2xl bg-[#0c0c0c] border border-[#1c1c1c]">
-        <div className="absolute inset-0 opacity-[0.18]">
-          <img src={anime.poster} alt="" className="h-full w-full object-cover blur-2xl scale-110" />
+        <div className="absolute inset-0 opacity-[0.18]" aria-hidden="true">
+          <img src={anime.poster} alt="" aria-hidden="true" className="h-full w-full object-cover blur-2xl scale-110" />
         </div>
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent" />
         <div className="relative flex flex-col gap-6 p-5 sm:p-6 lg:flex-row lg:p-8">
           <img
             src={anime.poster}
-            alt={anime.title}
+            alt={`${anime.title} anime poster`}
+            width={256}
+            height={384}
             className="h-auto w-full max-w-[280px] rounded-xl object-cover shadow-2xl mx-auto lg:mx-0 lg:w-64 lg:shrink-0 border border-white/10"
           />
           <div className="flex flex-1 flex-col gap-4">

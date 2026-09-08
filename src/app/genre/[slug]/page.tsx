@@ -8,11 +8,40 @@ import Link from "next/link";
 
 export const revalidate = 3600;
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ page?: string }>;
+}): Promise<Metadata> {
   const { slug } = await params;
+  const { page } = await searchParams;
+  const { absoluteUrl } = await import("@/lib/site");
+  const display = slug.replace(/-/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase());
+  const currentPage = Math.max(1, parseInt(page ?? "1", 10) || 1);
+  const title = currentPage > 1 ? `Genre ${display} — Halaman ${currentPage} | NimeSkuy` : `Genre ${display} | NimeSkuy`;
+  const description = `Nonton anime genre ${display} sub Indo di NimeSkuy — temukan ${display} terbaik dengan daftar episode lengkap dan streaming cepat.`;
+  const canonicalPath = currentPage > 1 ? `/genre/${slug}?page=${currentPage}` : `/genre/${slug}`;
   return {
-    title: `Genre ${slug} - NimeSkuy`,
-    description: `Nonton anime genre ${slug} sub Indo di NimeSkuy — Sanka API`,
+    title,
+    description,
+    alternates: { canonical: canonicalPath },
+    openGraph: {
+      title,
+      description,
+      url: absoluteUrl(canonicalPath),
+      siteName: "NimeSkuy",
+      type: "website",
+      locale: "id_ID",
+      images: [{ url: "/logo.png", width: 512, height: 512, alt: `Genre ${display} — NimeSkuy` }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/logo.png"],
+    },
   };
 }
 
@@ -43,8 +72,18 @@ export default async function GenreDetailPage({ params, searchParams }: { params
         </div>
       );
     }
+    const { Breadcrumbs } = await import("@/components/seo/breadcrumbs");
+    const { JsonLd, breadcrumbJsonLd } = await import("@/components/seo/json-ld");
+    const display = slug.replace(/-/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase());
+    const bc = breadcrumbJsonLd([
+      { name: "Home", url: "/" },
+      { name: "Genre", url: "/genre" },
+      { name: display, url: `/genre/${slug}` },
+    ]);
     return (
       <div className="mx-auto max-w-\[1520px\] px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+        <JsonLd data={bc} />
+        <Breadcrumbs items={[{ name: "Home", href: "/" }, { name: "Genre", href: "/genre" }, { name: display }]} />
         <div className="space-y-1">
           <h1 className="text-[22px] font-black tracking-tight text-white capitalize flex items-center gap-2.5">
             <span className="h-6 w-1 rounded-full bg-[#f5c518]" /> Genre: {slug.replace(/-/g, " ")}

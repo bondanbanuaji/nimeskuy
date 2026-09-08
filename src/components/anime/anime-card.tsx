@@ -1,7 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import { cn } from "@/lib/utils/cn";
 import type { AnimeCard as AnimeCardType } from "@/types/anime";
 import { Star, Play } from "lucide-react";
+import { useDragScroll } from "@/hooks/use-drag-scroll";
 
 export function AnimeCard({ anime, className }: { anime: AnimeCardType; className?: string }) {
   return (
@@ -11,13 +14,15 @@ export function AnimeCard({ anime, className }: { anime: AnimeCardType; classNam
         "group relative flex flex-col overflow-hidden rounded-xl bg-[#0c0c0c] border border-[#1c1c1c] hover:border-[#2a2a2a] hover:bg-[#141414] transition-all duration-200",
         className
       )}
+      draggable={false}
     >
       <div className="relative aspect-[2/3] overflow-hidden bg-[#111]">
         <img
           src={anime.poster}
-          alt={anime.title}
+          alt={`${anime.title} anime poster`}
           loading="lazy"
-          className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.06]"
+          draggable={false}
+          className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.06] pointer-events-none"
         />
         {/* subtle vignette */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-90" />
@@ -115,6 +120,7 @@ export function AnimeGrid({ list }: { list: AnimeCardType[] }) {
 }
 
 export function AnimeCarousel({ list, title, href }: { list: AnimeCardType[]; title: string; href?: string }) {
+  const { ref, onMouseDown, onTouchStart, onMouseLeave, onMouseUp, isDragging } = useDragScroll();
   if (!list.length) return null;
   return (
     <section className="space-y-4">
@@ -134,7 +140,19 @@ export function AnimeCarousel({ list, title, href }: { list: AnimeCardType[]; ti
         )}
       </div>
       <div className="relative -mx-4 px-4 sm:mx-0 sm:px-0">
-        <div className="flex gap-3 overflow-x-auto pb-3 scrollbar-hide scroll-smooth snap-x snap-mandatory">
+        <div
+          ref={ref}
+          data-lenis-prevent
+          onMouseDown={onMouseDown}
+          onMouseLeave={onMouseLeave}
+          onMouseUp={onMouseUp}
+          onTouchStart={onTouchStart}
+          onTouchEnd={onMouseUp}
+          className={cn(
+            "flex gap-3 overflow-x-auto pb-3 scrollbar-hide select-none cursor-grab active:cursor-grabbing",
+            isDragging ? "snap-none scroll-auto" : "scroll-smooth snap-x snap-mandatory"
+          )}
+        >
           {list.map((anime) => (
             <AnimeCard key={anime.slug} anime={anime} className="w-[148px] sm:w-[168px] shrink-0 snap-start" />
           ))}

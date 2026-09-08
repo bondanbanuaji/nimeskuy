@@ -1,4 +1,12 @@
-﻿export const metadata = { title: "Disclaimer | NimeSkuy" };
+﻿import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Disclaimer | NimeSkuy",
+  description: "Disclaimer NimeSkuy — konten streaming diambil dari Sanka API dan provider pihak ketiga.",
+  alternates: { canonical: "/disclaimer" },
+  robots: { index: true, follow: true },
+};
+
 export default function DisclaimerPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 sm:px-6 py-10">

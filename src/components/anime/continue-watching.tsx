@@ -4,9 +4,12 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getHistory, type HistoryItem } from "@/lib/utils/storage";
 import { Clock, Play, Film } from "lucide-react";
+import { useDragScroll } from "@/hooks/use-drag-scroll";
+import { cn } from "@/lib/utils/cn";
 
 export function ContinueWatching() {
   const [items, setItems] = useState<HistoryItem[]>([]);
+  const { ref, onMouseDown, onTouchStart, onMouseLeave, onMouseUp, isDragging } = useDragScroll();
 
   useEffect(() => {
     setItems(getHistory().slice(0, 6));
@@ -21,19 +24,33 @@ export function ContinueWatching() {
         <Clock className="h-[18px] w-[18px] text-[#d50032] sm:hidden" />
         <h2 className="text-[15px] font-bold tracking-tight text-white sm:text-[17px]">Lanjutkan Menonton</h2>
       </div>
-      <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 snap-x">
+      <div
+        ref={ref}
+        data-lenis-prevent
+        onMouseDown={onMouseDown}
+        onMouseLeave={onMouseLeave}
+        onMouseUp={onMouseUp}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onMouseUp}
+        className={cn(
+          "flex gap-3 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 select-none cursor-grab active:cursor-grabbing",
+          isDragging ? "snap-none scroll-auto" : "scroll-smooth snap-x"
+        )}
+      >
         {items.map((it) => (
           <Link
             key={it.animeSlug}
             href={`/watch/${it.episodeSlug}`}
             className="group relative w-[260px] shrink-0 overflow-hidden rounded-xl bg-[#0c0c0c] border border-[#1c1c1c] hover:border-[#2a2a2a] hover:bg-[#141414] transition snap-start"
+            draggable={false}
           >
             <div className="flex gap-3 p-3">
               {it.animePoster ? (
                 <img
                   src={it.animePoster}
                   alt={it.animeTitle}
-                  className="h-20 w-14 rounded-lg object-cover bg-[#111] border border-[#1c1c1c]"
+                  draggable={false}
+                  className="h-20 w-14 rounded-lg object-cover bg-[#111] border border-[#1c1c1c] pointer-events-none"
                   onError={(e) => {
                     (e.currentTarget as HTMLImageElement).style.display = "none";
                     const ph = (e.currentTarget.nextElementSibling as HTMLElement | null);

@@ -114,8 +114,15 @@ export async function getCompleted(page = 1): Promise<{ list: AnimeCard[]; pagin
   };
 }
 
-// For sitemap / popular - we reuse ongoing/completed as popular fallback
-export async function getPopularFallback(): Promise<AnimeCard[]> {
-  const home = await getHome();
-  return home.ongoing.slice(0, 12);
+export async function getTrending(): Promise<AnimeCard[]> {
+  try {
+    const data = await withRetry(() =>
+      sankaFetch<{ animeList: RawSearchData["animeList"] }>("/anime/trending", {
+        revalidate: CACHE_TTL.HOME,
+      })
+    );
+    return (data.animeList ?? []).map(mapAnimeCard);
+  } catch {
+    return getCompleted().then((r) => r.list.slice(0, 10));
+  }
 }

@@ -1,4 +1,6 @@
 ﻿import Link from "next/link";
+import { InstagramWatermark } from "@/components/ui/instagram-watermark";
+import { DEVELOPER_NAME } from "@/lib/site";
 
 export function Footer() {
   return (
@@ -12,15 +14,24 @@ export function Footer() {
             {/* brand */}
             <div className="max-w-sm">
               <Link href="/" className="inline-flex items-center gap-2.5">
-                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#d50032] to-[#ff3d2e] text-[13px] font-black text-white shadow-[0_4px_14px_rgba(213,0,50,0.35)]">
-                  N
-                </span>
+                <img src="/logo.png" alt="NimeSkuy" width={32} height={32} className="h-8 w-8 rounded-lg object-cover shadow-[0_4px_14px_rgba(213,0,50,0.35)]" />
                 <span className="text-[15px] font-black tracking-tight text-white">
                   Nime<span className="text-[#d50032]">Skuy</span>
                 </span>
               </Link>
               <p className="mt-3 text-[13px] leading-5 text-[#a0a0a0]">
-                Streaming anime sub Indo cepat & cinematic. Powered by Sanka.
+                Platform streaming anime sub Indo dengan katalog lengkap, genre, dan jadwal rilis. Powered by Sanka.
+              </p>
+              <p className="mt-2 text-[12px] leading-5 text-[#707070]">
+                Anime Streaming Platform · Developed by{" "}
+                <a
+                  href="https://www.instagram.com/bdn_bnj"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold text-[#a0a0a0] hover:text-white transition"
+                >
+                  {DEVELOPER_NAME}
+                </a>
               </p>
               <div className="mt-4 flex flex-wrap gap-1.5">
                 <span className="rounded-full bg-[#111] px-2.5 py-1 text-[11px] font-medium text-[#a0a0a0] border border-[#1c1c1c]">Sanka API</span>
@@ -30,16 +41,17 @@ export function Footer() {
             </div>
 
             {/* nav */}
-            <div className="flex gap-10 sm:gap-14">
+            <nav className="flex gap-10 sm:gap-14" aria-label="Footer">
               <div>
-                <h4 className="text-[11px] font-bold tracking-widest text-white/90">JELAJAHI</h4>
+                <h2 className="text-[11px] font-bold tracking-widest text-white/90">JELAJAHI</h2>
                 <ul className="mt-3 space-y-2">
                   {[
                     { href: "/", label: "Home" },
-                    { href: "/ongoing", label: "Ongoing" },
-                    { href: "/completed", label: "Completed" },
-                    { href: "/schedule", label: "Jadwal" },
-                    { href: "/genre", label: "Genre" },
+                    { href: "/ongoing", label: "Ongoing Anime" },
+                    { href: "/completed", label: "Completed Anime" },
+                    { href: "/movies", label: "Movie Anime" },
+                    { href: "/schedule", label: "Jadwal Rilis" },
+                    { href: "/genre", label: "Genre Anime" },
                   ].map((l) => (
                     <li key={l.href}>
                       <Link href={l.href} className="text-[13px] text-[#a0a0a0] hover:text-white transition">
@@ -50,10 +62,10 @@ export function Footer() {
                 </ul>
               </div>
               <div>
-                <h4 className="text-[11px] font-bold tracking-widest text-white/90">INFO</h4>
+                <h2 className="text-[11px] font-bold tracking-widest text-white/90">INFO</h2>
                 <ul className="mt-3 space-y-2">
                   {[
-                    { href: "/about", label: "About" },
+                    { href: "/about", label: "About NimeSkuy" },
                     { href: "/disclaimer", label: "Disclaimer" },
                     { href: "/privacy", label: "Privacy" },
                     { href: "/terms", label: "Terms" },
@@ -66,11 +78,11 @@ export function Footer() {
                   ))}
                 </ul>
               </div>
-            </div>
+            </nav>
 
             {/* legal card */}
             <div className="max-w-[320px] rounded-2xl border border-[#1c1c1c] bg-[#0c0c0c] p-4">
-              <h4 className="text-[11px] font-bold tracking-widest text-white/80">LEGAL</h4>
+              <h2 className="text-[11px] font-bold tracking-widest text-white/80">LEGAL</h2>
               <p className="mt-2 text-xs leading-5 text-[#707070]">
                 NimeSkuy tidak host video. Semua konten, poster & streaming diambil dari Sanka API.
               </p>
@@ -81,17 +93,9 @@ export function Footer() {
           </div>
         </div>
 
-        {/* bottom bar */}
-        <div className="flex flex-col items-center justify-between gap-3 border-t border-[#1c1c1c] py-5 sm:flex-row">
-          <p className="text-xs text-[#707070]">
-            © {new Date().getFullYear()} NimeSkuy • <span className="text-[#a0a0a0]">Sanka Anime API</span>
-          </p>
-          <div className="flex items-center gap-2 text-xs text-[#52525c]">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#46d369] shadow-[0_0_8px_rgba(70,211,105,0.5)]" />
-            API 60/menit • cache aktif
-            <span className="hidden sm:inline text-[#1c1c1c]">|</span>
-            <span className="text-[#707070]">Dark only</span>
-          </div>
+        {/* bottom bar - attribution watermark centered */}
+        <div className="flex justify-center border-t border-[#1c1c1c] py-6">
+          <InstagramWatermark />
         </div>
       </div>
     </footer>
