@@ -72,13 +72,13 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ slu
   if (!slug) return NextResponse.json({ success: false, error: { message: "slug required" } }, { status: 400 });
 
   try {
-    const sankaRes = await fetch(`${process.env.SANKA_API_URL || "https://www.sankavollerei.web.id"}/anime/anime/${encodeURIComponent(slug)}`, {
+    const sourceRes = await fetch(`${process.env.SANKA_API_URL || "https://www.sankavollerei.web.id"}/anime/anime/${encodeURIComponent(slug)}`, {
       next: { revalidate: 3600 },
     });
-    const sankaJson = await sankaRes.json().catch(() => null);
-    const sankaData = sankaJson?.data ?? sankaJson;
-    const title: string | undefined = sankaData?.title as string | undefined;
-    const sankaPoster: string | undefined = sankaData?.poster as string | undefined;
+    const sourceJson = await sourceRes.json().catch(() => null);
+    const sourceData = sourceJson?.data ?? sourceJson;
+    const title: string | undefined = sourceData?.title as string | undefined;
+    const sourcePoster: string | undefined = sourceData?.poster as string | undefined;
     if (!title) return NextResponse.json({ success: false, error: { message: "title not found" } }, { status: 404 });
 
     // 1. Google dulu — format bagus, high-res, gak burik
@@ -121,7 +121,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ slu
       }
     } catch {}
 
-    if (sankaPoster) return NextResponse.json({ success: true, data: { banner: sankaPoster, title, source: "sanka" } }, { status: 200 });
+    if (sourcePoster) return NextResponse.json({ success: true, data: { banner: sourcePoster, title, source: "external" } }, { status: 200 });
 
     return NextResponse.json({ success: false, error: { message: "no image" } }, { status: 404 });
   } catch (e) {
