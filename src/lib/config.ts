@@ -61,8 +61,10 @@ export function isAllowedEmbedUrl(url: string): boolean {
     const u = new URL(url);
     if (u.protocol !== "https:" && u.protocol !== "http:") return false;
     if (isPrivateHostname(u.hostname)) return false;
-    if (u.username && isPrivateHostname(u.hostname)) return false;
-    return true;
+    const hostname = u.hostname;
+    return ALLOWED_EMBED_DOMAINS.some(
+      (domain) => hostname === domain || hostname.endsWith("." + domain),
+    );
   } catch {
     return false;
   }
