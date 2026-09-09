@@ -59,7 +59,6 @@ async function SearchResults({ query }: { query: string }) {
       <div className="space-y-4">
         <p className="text-[13px] text-[#a0a0a0]">
           Menampilkan <span className="text-white font-bold">{results.length}</span> hasil untuk <span className="text-white font-semibold">&quot;{query}&quot;</span>
-          <span className="ml-2 rounded-full bg-[#111] border border-[#1c1c1c] px-2 py-0.5 text-xs text-[#707070]">Sanka</span>
         </p>
         <AnimeGrid list={results} />
       </div>
@@ -80,7 +79,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
     <div className="mx-auto max-w-\[1520px\] px-4 sm:px-6 lg:px-8 py-6 space-y-6">
       <div className="space-y-1">
         <h1 className="text-[22px] font-black tracking-tight text-white sm:text-2xl">Cari Anime</h1>
-        <p className="text-[13px] text-[#a0a0a0]">Temukan anime dengan cepat — Sanka</p>
+        <p className="text-[13px] text-[#a0a0a0]">Cari anime favoritmu dengan cepat.</p>
       </div>
       <Suspense>
         <SearchInput initialValue={query} />

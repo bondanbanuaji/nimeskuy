@@ -88,7 +88,7 @@ export default async function GenreDetailPage({ params, searchParams }: { params
           <h1 className="text-[22px] font-black tracking-tight text-white capitalize flex items-center gap-2.5">
             <span className="h-6 w-1 rounded-full bg-[#f5c518]" /> Genre: {slug.replace(/-/g, " ")}
           </h1>
-          <p className="text-[13px] text-[#a0a0a0] pl-3.5">{list.length} anime ditemukan — Halaman {currentPage} — Sanka</p>
+          <p className="text-[13px] text-[#a0a0a0] pl-3.5">{list.length} anime ditemukan — Halaman {currentPage}</p>
         </div>
         <AnimeGrid list={list} />
         <div className="flex items-center justify-center gap-2">
@@ -98,7 +98,7 @@ export default async function GenreDetailPage({ params, searchParams }: { params
           <span className="rounded-full bg-[#d50032] px-4 py-2 text-[13px] font-bold text-white">Halaman {currentPage}</span>
           <Link href={`/genre/${slug}?page=${currentPage + 1}`} className="rounded-full bg-[#0c0c0c] border border-[#1c1c1c] px-5 py-2 text-[13px] font-semibold text-white hover:bg-[#141414]">Next</Link>
         </div>
-        <p className="text-center text-xs text-[#707070]">Genre pagination tergantung ketersediaan API. Jika kosong, telah mencapai akhir.</p>
+        <p className="text-center text-xs text-[#707070]">Halaman berikutnya akan dimuat saat ada data baru. Jika halaman kosong, koleksi telah selesai.</p>
       </div>
     );
   } catch (err) {

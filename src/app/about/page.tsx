@@ -56,12 +56,11 @@ export default function AboutPage() {
           <p>
             <strong className="font-semibold text-white">NimeSkuy</strong> adalah platform streaming anime yang dikembangkan oleh{" "}
             <strong className="font-semibold text-white">{DEVELOPER_NAME}</strong>. Platform ini menghadirkan pengalaman menonton
-            yang simpel, cepat, dan nyaman — dengan katalog anime yang terkurasi, informasi episode yang jelas, serta navigasi genre yang mudah.
+            yang simpel, cepat, dan nyaman — dengan katalog anime terbaru, informasi episode yang jelas, serta navigasi genre yang mudah.
           </p>
           <p>
-            NimeSkuy mengambil metadata anime, daftar episode, dan tautan streaming dari Sanka Anime REST API yang mengagregasi data
-            dari berbagai sumber seperti Otakudesu dan lainnya. Seluruh poster, sinopsis, dan detail episode ditampilkan secara
-            terstruktur agar mudah ditemukan baik oleh pengguna maupun mesin pencari.
+            NimeSkuy menampilkan metadata anime, daftar episode, dan tautan streaming dari sumber data eksternal. Informasi ditampilkan secara
+            terstruktur agar mudah ditemukan oleh pengguna maupun mesin pencari.
           </p>
 
           <h2 className="text-[15px] font-bold tracking-tight text-white pt-2 flex items-center gap-2">
@@ -80,8 +79,8 @@ export default function AboutPage() {
             <span className="h-4 w-1 rounded-full bg-[#d50032]" /> Tujuan Project
           </h2>
           <p>
-            NimeSkuy dibangun sebagai project portfolio untuk menunjukkan kemampuan pengembangan web modern — mulai dari integrasi
-            API eksternal, server-side rendering untuk SEO, hingga desain yang responsif dan aksesibel. Fokus utamanya adalah
+            NimeSkuy dibangun sebagai proyek portofolio untuk menunjukkan kemampuan pengembangan web modern — mulai dari integrasi
+            sumber data eksternal, server-side rendering untuk SEO, hingga desain yang responsif dan aksesibel. Fokus utamanya adalah
             performa, kejelasan informasi, dan kemudahan penggunaan tanpa mengorbankan pengalaman menonton.
           </p>
 
@@ -89,8 +88,8 @@ export default function AboutPage() {
             <span className="h-4 w-1 rounded-full bg-[#d50032]" /> Teknologi
           </h2>
           <p>
-            Dibangun dengan Next.js 16 (App Router), React 19, TypeScript, dan Tailwind CSS. Data diambil dari Sanka API dengan
-            caching ISR untuk menjaga kecepatan sekaligus menghormati rate limit. Optimasi mencakup ISR/SSG, dynamic metadata,
+            Dibangun dengan Next.js 16 (App Router), React 19, TypeScript, dan Tailwind CSS. Data diperoleh dari sumber eksternal dengan
+            penyaringan konten untuk menjaga kecepatan sekaligus menghormati batas penggunaan. Optimasi mencakup ISR/SSG, metadata dinamis,
             sitemap dinamis, dan structured data JSON-LD.
           </p>
 
@@ -133,7 +132,7 @@ export default function AboutPage() {
         </footer>
 
         <p className="text-[12px] leading-4 text-[#52525c] border-t border-[#1c1c1c] pt-4">
-          Powered by Sanka Anime API — Karya Sanka Vollerei. NimeSkuy tidak menyimpan file video secara langsung.
+          NimeSkuy tidak menyimpan file video secara langsung. Konten dan tautan tayang berasal dari sumber eksternal.
         </p>
       </article>
     </div>

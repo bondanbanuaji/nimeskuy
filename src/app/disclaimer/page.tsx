@@ -2,7 +2,7 @@
 
 export const metadata: Metadata = {
   title: "Disclaimer | NimeSkuy",
-  description: "Disclaimer NimeSkuy — konten streaming diambil dari Sanka API dan provider pihak ketiga.",
+  description: "Disclaimer NimeSkuy — informasi terkait konten, tautan streaming, dan hak cipta.",
   alternates: { canonical: "/disclaimer" },
   robots: { index: true, follow: true },
 };
@@ -16,10 +16,11 @@ export default function DisclaimerPage() {
           <h1 className="text-[20px] font-black tracking-tight text-white">Disclaimer</h1>
         </div>
         <p className="text-[13.5px] leading-relaxed text-[#c4c4c4]">
-          NimeSkuy tidak menyimpan file video anime secara langsung. Semua konten, metadata, poster, dan link streaming diambil dari Sanka Anime REST API dan provider pihak ketiga. NimeSkuy tidak mengklaim kepemilikan atas konten tersebut.
+          NimeSkuy tidak menyimpan file video anime secara langsung. Semua konten, metadata, poster, dan tautan streaming berasal dari
+          sumber eksternal. NimeSkuy tidak mengklaim kepemilikan atas konten tersebut.
         </p>
         <p className="text-[13.5px] leading-relaxed text-[#c4c4c4]">
-          Jika Anda adalah pemilik hak cipta dan menemukan konten yang melanggar, silakan hubungi provider sumber asli. Penggunaan embed mengikuti terms dari masing-masing provider.
+          Jika Anda adalah pemilik hak cipta dan menemukan konten yang melanggar, silakan hubungi pemilik hak terkait. Ketentuan penggunaan berlaku pada sumber terkait.
         </p>
       </div>
     </div>

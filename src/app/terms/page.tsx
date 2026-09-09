@@ -16,7 +16,7 @@ export default function TermsPage() {
           <h1 className="text-[20px] font-black tracking-tight text-white">Terms of Service</h1>
         </div>
         <p className="text-[13.5px] leading-relaxed text-[#c4c4c4]">Dengan menggunakan NimeSkuy, Anda setuju untuk tidak menyalahgunakan layanan, tidak melakukan scraping berlebihan, dan menghormati hak cipta pemilik konten.</p>
-        <p className="text-[13.5px] leading-relaxed text-[#c4c4c4]">Layanan disediakan sebagaimana adanya. Kami berupaya menjaga ketersediaan namun tidak menjamin uptime 100% karena ketergantungan pada API pihak ketiga.</p>
+        <p className="text-[13.5px] leading-relaxed text-[#c4c4c4]">Layanan disediakan sebagaimana adanya. Kami berupaya menjaga ketersediaan namun tidak menjamin uptime 100% karena ketergantungan pada sumber eksternal.</p>
       </div>
     </div>
   );

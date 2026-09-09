@@ -68,7 +68,7 @@ export function HeroCarousel({ animes }: { animes: AnimeCard[] }) {
     };
   }, [current]);
 
-  // fetch synopsis/metadata dari Sanka detail untuk description
+  // Ambil synopsis/metadata dari detail anime untuk deskripsi.
   useEffect(() => {
     if (!anime) return;
     let cancelled = false;
@@ -96,7 +96,7 @@ export function HeroCarousel({ animes }: { animes: AnimeCard[] }) {
         });
       })
       .catch(() => {});
-    // ambil banner high-res biar gak burik — Jikan large_image_url, fallback ke poster Sanka
+    // Ambil banner resolusi tinggi agar tampilan lebih tajam.
     fetch(`/api/anime/banner/${encodeURIComponent(anime.slug)}`)
       .then((r) => r.json())
       .then((j) => {
@@ -234,7 +234,7 @@ export function HeroCarousel({ animes }: { animes: AnimeCard[] }) {
               {description}
             </p>
           ) : (
-            <p className="line-clamp-2 max-w-[560px] text-[13.5px] leading-6 text-white/70 sm:text-[14px]">Streaming anime sub Indo terbaru — tersedia di NimeSkuy via Sanka.</p>
+            <p className="line-clamp-2 max-w-[560px] text-[13.5px] leading-6 text-white/70 sm:text-[14px]">Streaming anime sub Indo terbaru — tonton langsung di NimeSkuy.</p>
           )}
 
           {/* CTA */}

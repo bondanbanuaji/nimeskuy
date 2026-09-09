@@ -29,19 +29,19 @@ export function WatchClient({ initialDetail, episodeSlug }: { initialDetail: Epi
   async function selectServer(serverId: string) {
     setLoadingServer(true);
     setServerError(null);
-    setActiveServer(serverId);
+    setActiveServer(null);
     try {
       const res = await fetch(`/api/server/${encodeURIComponent(serverId)}?episode=${encodeURIComponent(episodeSlug)}`);
       const json = await res.json();
       if (!res.ok || !json.success) {
-        throw new Error(json?.error?.message || "Gagal memuat server");
+        throw new Error("Pilihan tayang belum dapat dimuat.");
       }
       const url = json.data?.url as string;
-      if (!url) throw new Error("URL tidak tersedia");
+      if (!url) throw new Error("Pilihan tayang belum tersedia.");
       setActiveUrl(url);
+      setActiveServer(serverId);
     } catch (e: unknown) {
-      const msg = e instanceof Error ? e.message : "Gagal memuat server";
-      setServerError(msg);
+      setServerError("Pilihan tayang belum dapat dimuat. Silakan coba lagi.");
     } finally {
       setLoadingServer(false);
     }
@@ -49,14 +49,10 @@ export function WatchClient({ initialDetail, episodeSlug }: { initialDetail: Epi
 
   return (
     <div className="mx-auto max-w-\[1520px\] px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-      {/* Player — PRD #23 Streaming Flow: Episode API → Server list → embed URL */}
       <div className="space-y-4">
         <VideoPlayer src={activeUrl} title={initialDetail.title} />
-        {loadingServer && <p className="text-sm text-[#a0a0a0]">Memuat server...</p>}
-        {serverError && <p className="text-sm text-red-400">{serverError} Coba server lain.</p>}
-        <p className="rounded-xl bg-[#111] border border-[#1c1c1c] p-3 text-xs text-[#a0a0a0]">
-          Streaming via <b className="text-white">Sanka API</b> — embed langsung. Data proxy via <code className="rounded bg-[#0c0c0c] border border-[#1c1c1c] px-1 py-0.5">/api/server/:serverId</code>.
-        </p>
+        {loadingServer && <p className="text-sm text-[#a0a0a0]" role="status">Memuat pilihan tayang...</p>}
+        {serverError && <p className="text-sm text-red-400" role="alert">{serverError}</p>}
       </div>
 
       <div className="space-y-3">
@@ -67,7 +63,7 @@ export function WatchClient({ initialDetail, episodeSlug }: { initialDetail: Epi
               <Link href={`/anime/${initialDetail.animeSlug}`} className="text-[13px] font-medium text-[#d50032] hover:text-[#ff3d2e]">
                 Lihat detail anime
               </Link>
-              <span className="rounded-full bg-[#111] border border-[#1c1c1c] px-2 py-0.5 text-xs text-[#707070]">Sanka</span>
+              <span className="rounded-full bg-[#111] border border-[#1c1c1c] px-2 py-0.5 text-xs text-[#707070]">Sub Indo</span>
             </div>
           </div>
           <div className="flex gap-2 shrink-0">
@@ -104,14 +100,14 @@ export function WatchClient({ initialDetail, episodeSlug }: { initialDetail: Epi
           </div>
         </div>
 
-        {/* Server selector — PRD #25 */}
+        {/* Server selector */}
         <div className="rounded-2xl bg-[#0c0c0c] border border-[#1c1c1c] p-4 sm:p-5 space-y-4">
           <div className="flex items-center gap-2">
             <Server className="h-4 w-4 text-[#707070]" />
-            <h2 className="text-[13px] font-bold tracking-tight text-white">Pilih Server — Sanka</h2>
+            <h2 className="text-[13px] font-bold tracking-tight text-white">Pilih Sumber Tayang</h2>
           </div>
           {initialDetail.servers.length === 0 ? (
-            <p className="text-sm text-[#707070]">Tidak ada server tersedia.</p>
+            <p className="text-sm text-[#707070]">Belum tersedia untuk episode ini.</p>
           ) : (
             <div className="space-y-3">
               {initialDetail.servers.map((q) => (
@@ -119,7 +115,7 @@ export function WatchClient({ initialDetail, episodeSlug }: { initialDetail: Epi
                   <div className="text-[11px] font-bold text-[#707070] uppercase tracking-widest">{q.title}</div>
                   <div className="flex flex-wrap gap-2">
                     {q.serverList.length === 0 ? (
-                      <span className="text-xs text-[#707070]">Tidak ada server untuk kualitas ini</span>
+                      <span className="text-xs text-[#707070]">Belum tersedia untuk kualitas ini</span>
                     ) : (
                       q.serverList.map((s) => {
                         const isActive = activeServer === s.serverId;
@@ -143,10 +139,9 @@ export function WatchClient({ initialDetail, episodeSlug }: { initialDetail: Epi
               ))}
             </div>
           )}
-          <p className="text-xs text-[#707070]">Jika video tidak muncul, coba ganti server lain. Embed via <code className="bg-[#111] border border-[#1c1c1c] px-1 rounded">/anime/server/:serverId</code> Sanka.</p>
         </div>
 
-        {/* Episode list — PRD #21 */}
+        {/* Episode list */}
         <div className="rounded-2xl bg-[#0c0c0c] border border-[#1c1c1c] p-4 sm:p-5">
           <h2 className="text-[13px] font-bold tracking-tight text-white mb-3 flex items-center gap-2">
             <span className="h-4 w-1 rounded-full bg-[#d50032]" /> Daftar Episode

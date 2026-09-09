@@ -20,7 +20,7 @@ export function Footer() {
                 </span>
               </Link>
               <p className="mt-3 text-[13px] leading-5 text-[#a0a0a0]">
-                Platform streaming anime sub Indo dengan katalog lengkap, genre, dan jadwal rilis. Powered by Sanka.
+                Platform streaming anime sub Indo dengan katalog lengkap, genre, dan jadwal rilis.
               </p>
               <p className="mt-2 text-[12px] leading-5 text-[#707070]">
                 Anime Streaming Platform · Developed by{" "}
@@ -34,8 +34,8 @@ export function Footer() {
                 </a>
               </p>
               <div className="mt-4 flex flex-wrap gap-1.5">
-                <span className="rounded-full bg-[#111] px-2.5 py-1 text-[11px] font-medium text-[#a0a0a0] border border-[#1c1c1c]">Sanka API</span>
-                <span className="rounded-full bg-[#111] px-2.5 py-1 text-[11px] font-medium text-[#a0a0a0] border border-[#1c1c1c]">Otakudesu</span>
+                <span className="rounded-full bg-[#111] px-2.5 py-1 text-[11px] font-medium text-[#a0a0a0] border border-[#1c1c1c]">Sub Indo</span>
+                <span className="rounded-full bg-[#111] px-2.5 py-1 text-[11px] font-medium text-[#a0a0a0] border border-[#1c1c1c]">HD</span>
                 <span className="rounded-full bg-[#f5c518]/10 px-2.5 py-1 text-[11px] font-bold text-[#f5c518] border border-[#f5c518]/15">HD</span>
               </div>
             </div>
@@ -84,10 +84,10 @@ export function Footer() {
             <div className="max-w-[320px] rounded-2xl border border-[#1c1c1c] bg-[#0c0c0c] p-4">
               <h2 className="text-[11px] font-bold tracking-widest text-white/80">LEGAL</h2>
               <p className="mt-2 text-xs leading-5 text-[#707070]">
-                NimeSkuy tidak host video. Semua konten, poster & streaming diambil dari Sanka API.
+                NimeSkuy tidak menyimpan file video. Konten dan tautan tayang berasal dari sumber eksternal.
               </p>
               <p className="mt-2 text-[11px] leading-4 text-[#52525c]">
-                Hubungi provider sumber untuk takedown. Embed mengikuti terms provider.
+                Untuk permintaan penghapusan, hubungi pemilik hak terkait. Ketentuan penggunaan berlaku pada sumber terkait.
               </p>
             </div>
           </div>

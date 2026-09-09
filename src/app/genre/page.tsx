@@ -41,7 +41,7 @@ export default async function GenrePage() {
     if (!genres.length) {
       return (
         <div className="mx-auto max-w-\[1520px\] px-4 py-12">
-          <EmptyState title="Belum ada genre" description="Gagal memuat genre dari Sanka." />
+          <EmptyState title="Belum dapat memuat genre" description="Silakan coba lagi." />
         </div>
       );
     }
@@ -58,8 +58,7 @@ export default async function GenrePage() {
             <div className="min-w-0 flex-1">
               <h1 className="text-[22px] font-black leading-none tracking-tight text-white sm:text-[24px]">Genre</h1>
               <p className="mt-2 max-w-2xl text-[13px] leading-5 text-[#a0a0a0]">
-                Jelajahi anime berdasarkan genre favoritmu. Semua genre diambil langsung dari{" "}
-                <span className="font-semibold text-white">Sanka</span> — curated dari Otakudesu.
+                Jelajahi anime berdasarkan genre favoritmu. Temukan judul yang sesuai dengan minatmu.
               </p>
             </div>
           </div>

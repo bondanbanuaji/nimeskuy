@@ -22,7 +22,7 @@ export function GenreGrid({ genres }: { genres: Genre[] }) {
           <span className="inline-flex h-7 items-center rounded-full bg-[#111] border border-[#1c1c1c] px-3 text-xs font-semibold text-[#a0a0a0]">
             {genres.length} GENRE
           </span>
-          <span className="text-xs text-[#52525c]">Sanka • Otakudesu</span>
+          <span className="text-xs text-[#52525c]">Katalog terbaru</span>
         </div>
         <div className="relative w-full sm:w-[280px] group">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#52525c] group-focus-within:text-[#a0a0a0] transition" />
@@ -67,7 +67,7 @@ export function GenreGrid({ genres }: { genres: Genre[] }) {
       )}
 
       <p className="pt-2 text-center text-xs text-[#52525c]">
-        Klik genre untuk lihat anime — data via <span className="text-[#707070]">Sanka</span> • cache 24 jam
+        Pilih genre untuk melihat anime terkait.
       </p>
     </div>
   );

@@ -115,7 +115,7 @@ export default async function AnimeDetailPage({ params }: { params: Promise<{ sl
             <div>
               <div className="flex items-start gap-2 flex-wrap">
                 <h1 className="text-[22px] font-black tracking-tight text-white sm:text-[26px] leading-tight">{anime.title}</h1>
-                <span className="rounded-full bg-[#111] border border-[#1c1c1c] px-2.5 py-1 text-[11px] font-semibold text-[#707070]">Sanka</span>
+                <span className="rounded-full bg-[#111] border border-[#1c1c1c] px-2.5 py-1 text-[11px] font-semibold text-[#707070]">Sub Indo</span>
               </div>
               {anime.japanese && <p className="text-[13px] text-[#a0a0a0] mt-1.5 leading-relaxed">{anime.japanese}</p>}
             </div>

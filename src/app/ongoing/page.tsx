@@ -64,7 +64,7 @@ export default async function OngoingPage({ searchParams }: { searchParams: Prom
           <h1 className="text-[22px] font-black tracking-tight text-white sm:text-2xl flex items-center gap-2.5">
             <span className="h-6 w-1 rounded-full bg-[#d50032]" /> Ongoing Anime
           </h1>
-          <p className="text-[13px] text-[#a0a0a0] pl-3.5">Anime yang sedang tayang — Sanka</p>
+          <p className="text-[13px] text-[#a0a0a0] pl-3.5">Anime yang sedang tayang — pembaruan terbaru dan info episode.</p>
         </div>
         <AnimeGrid list={list} />
         <div className="flex items-center justify-center gap-2 pt-2">
@@ -84,7 +84,7 @@ export default async function OngoingPage({ searchParams }: { searchParams: Prom
             Next
           </Link>
         </div>
-        <p className="text-center text-xs text-[#707070]">Pagination mengikuti data API. Jika halaman kosong, API telah mencapai akhir.</p>
+        <p className="text-center text-xs text-[#707070]">Halaman berikutnya akan dimuat saat ada data baru. Jika halaman kosong, koleksi telah selesai.</p>
       </div>
     );
   } catch (err) {

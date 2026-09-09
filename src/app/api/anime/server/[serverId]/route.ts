@@ -18,6 +18,6 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ ser
     if (err instanceof ApiError) {
       return NextResponse.json({ success: false, error: { code: err.code, message: err.message } }, { status: err.status });
     }
-    return NextResponse.json({ success: false, error: { code: "SERVER_ERROR", message: "Gagal memuat server" } }, { status: 500 });
+    return NextResponse.json({ success: false, error: { code: "SERVER_ERROR", message: "Gagal memuat pilihan tayang" } }, { status: 500 });
   }
 }

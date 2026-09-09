@@ -45,7 +45,7 @@ export default async function MoviesPage() {
           <h1 className="text-[22px] font-black tracking-tight text-white sm:text-2xl flex items-center gap-2.5">
             <span className="h-6 w-1 rounded-full bg-[#3b82f6]" /> Movie Anime
           </h1>
-          <p className="text-[13px] text-[#a0a0a0] pl-3.5">Koleksi movie anime sub Indo — Sanka</p>
+          <p className="text-[13px] text-[#a0a0a0] pl-3.5">Koleksi film anime sub Indo pilihan.</p>
         </div>
         <AnimeGrid list={display} />
       </div>

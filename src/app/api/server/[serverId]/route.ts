@@ -33,7 +33,7 @@ export async function GET(
       );
     }
     return NextResponse.json(
-      { success: false, error: { code: "SERVER_ERROR", message: "Gagal memuat server Sanka" } },
+      { success: false, error: { code: "SERVER_ERROR", message: "Gagal memuat pilihan tayang" } },
       { status: 500 }
     );
   }
