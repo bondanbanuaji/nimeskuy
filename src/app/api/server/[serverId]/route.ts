@@ -24,7 +24,7 @@ export async function GET(
         { status: 400 }
       );
     }
-    return NextResponse.json({ success: true, data: { url, provider: "sanka" as const } }, { status: 200 });
+    return NextResponse.json({ success: true, data: { url } }, { status: 200 });
   } catch (err) {
     if (err instanceof ApiError) {
       return NextResponse.json(

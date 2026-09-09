@@ -13,7 +13,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ ser
     if (!isAllowedEmbedUrl(url)) {
       return NextResponse.json({ success: false, error: { code: "INVALID_URL", message: "URL tidak valid" } }, { status: 400 });
     }
-    return NextResponse.json({ success: true, data: { url, provider: "sanka" as const } }, { status: 200 });
+    return NextResponse.json({ success: true, data: { url } }, { status: 200 });
   } catch (err) {
     if (err instanceof ApiError) {
       return NextResponse.json({ success: false, error: { code: err.code, message: err.message } }, { status: err.status });
