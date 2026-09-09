@@ -13,6 +13,7 @@ export function WatchClient({ initialDetail, episodeSlug }: { initialDetail: Epi
   const [activeServer, setActiveServer] = useState<string | null>(null);
   const [loadingServer, setLoadingServer] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
+  const [autoTrying, setAutoTrying] = useState(true);
 
   useEffect(() => {
     const num = extractNumber(initialDetail.title) ?? initialDetail.episodeList.find((e) => e.slug === episodeSlug)?.number ?? null;
@@ -26,21 +27,67 @@ export function WatchClient({ initialDetail, episodeSlug }: { initialDetail: Epi
     });
   }, [initialDetail, episodeSlug]);
 
+  // Auto-try servers on mount until one works
+  useEffect(() => {
+    let cancelled = false;
+    let index = 0;
+    const allServers = initialDetail.servers.flatMap((q) => q.serverList);
+    if (allServers.length === 0) {
+      setAutoTrying(false);
+      setServerError("Belum tersedia untuk episode ini.");
+      return;
+    }
+
+    async function tryServer(serverId: string): Promise<string | null> {
+      try {
+        const res = await fetch(`/api/server/${encodeURIComponent(serverId)}?episode=${encodeURIComponent(episodeSlug)}`);
+        const json = await res.json();
+        if (!res.ok || !json.success) return null;
+        return (json.data?.url as string) ?? null;
+      } catch {
+        return null;
+      }
+    }
+
+    async function tryNext() {
+      if (cancelled || index >= allServers.length) {
+        if (!cancelled) {
+          setAutoTrying(false);
+          setServerError("Belum tersedia untuk episode ini.");
+        }
+        return;
+      }
+      const server = allServers[index];
+      index++;
+      const url = await tryServer(server.serverId);
+      if (!cancelled && url) {
+        setActiveUrl(url);
+        setActiveServer(server.serverId);
+        setAutoTrying(false);
+        return;
+      }
+      setTimeout(tryNext, 50);
+    }
+
+    tryNext();
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [episodeSlug]);
+
   async function selectServer(serverId: string) {
+    setAutoTrying(false);
     setLoadingServer(true);
     setServerError(null);
     setActiveServer(null);
     try {
       const res = await fetch(`/api/server/${encodeURIComponent(serverId)}?episode=${encodeURIComponent(episodeSlug)}`);
       const json = await res.json();
-      if (!res.ok || !json.success) {
-        throw new Error("Pilihan tayang belum dapat dimuat.");
-      }
+      if (!res.ok || !json.success) throw new Error("Pilihan tayang belum tersedia.");
       const url = json.data?.url as string;
       if (!url) throw new Error("Pilihan tayang belum tersedia.");
       setActiveUrl(url);
       setActiveServer(serverId);
-    } catch (e: unknown) {
+    } catch {
       setServerError("Pilihan tayang belum dapat dimuat. Silakan coba lagi.");
     } finally {
       setLoadingServer(false);
@@ -51,7 +98,8 @@ export function WatchClient({ initialDetail, episodeSlug }: { initialDetail: Epi
     <div className="mx-auto max-w-\[1520px\] px-4 sm:px-6 lg:px-8 py-6 space-y-6">
       <div className="space-y-4">
         <VideoPlayer src={activeUrl} title={initialDetail.title} />
-        {loadingServer && <p className="text-sm text-[#a0a0a0]" role="status">Memuat pilihan tayang...</p>}
+        {autoTrying && <p className="text-sm text-[#a0a0a0]" role="status">Sedang mencoba server...</p>}
+        {loadingServer && !autoTrying && <p className="text-sm text-[#a0a0a0]" role="status">Memuat pilihan tayang...</p>}
         {serverError && <p className="text-sm text-red-400" role="alert">{serverError}</p>}
       </div>
 
